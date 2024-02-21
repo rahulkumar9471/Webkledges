@@ -11,7 +11,11 @@ import Tags from "../blogComponents/Tags";
 
 const images = [image1, image2, image3];
 
-const BlogSidebar = () => {
+const BlogSidebar = (props) => {
+
+  const populars = props.populars;
+  console.log(populars);
+
   return (
     <>
       <div className="w-full sm:w-full md:w-full lg:w-4/12 xl:w-4/12 mt-10 sm:mt-10 md:mt-10 lg:mt-0">
@@ -25,12 +29,11 @@ const BlogSidebar = () => {
           </div>
         </div>
         <div className="flex flex-col gap-y-8 mt-10">
-          <SLandscapeCard />
-          <SLandscapeCard />
-          <SLandscapeCard />
-          <SLandscapeCard />
-          <SLandscapeCard />
-          <SLandscapeCard />
+          {
+            populars.map((popular) =>(
+              <SLandscapeCard key={popular.id} {...popular}/>
+            ))
+          } 
         </div>
         <div className="mt-10">
           <h1 className="text-xl sm:text-xl md:text-2xl lg:text-2xl xl:text-2xl font-semibold">

@@ -25,11 +25,9 @@ const SLandscapeCard = (props) => {
           <div>
             <Link to="/Blog">
               <h1 className="text-l font-bold hover:text-[#418160]">
-              {
-                  props.title.length > 90? 
-                  (props.title.substr(0, 90)) + '...' : 
-                  (props.title)
-                }
+                {props.title.length > 90
+                  ? props.title.substr(0, 90) + "..."
+                  : props.title}
               </h1>
             </Link>
           </div>
