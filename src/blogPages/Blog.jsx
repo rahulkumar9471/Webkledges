@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import banner from "../img/banner.jpg";
 import BlogSidebar from "../blogTemplate/BlogSidebar";
 import {
@@ -14,28 +14,100 @@ import SmallProfileBrif from "../blogComponents/SmallProfileBrif";
 import { FaLinkedin } from "react-icons/fa";
 import BlogComment from "../blogComponents/BlogComment";
 import LeaveComment from "../blogComponents/LeaveComment";
+import Spinner from "../blogComponents/Spinner";
 
 const Blog = () => {
+  const API_KEY = "AIzaSyCYgDAPHqBrC20ob9WMWhCV5Vv8kSPLtkM";
+  const BLOG_ID = "3226864875966992925";
+  const SIDE_RELATED_RESULTS = 6;
+  const [post, setPost] = useState([]);
+  const [populars, setPopulars] = useState([]);
+  const [loadingPost, setLoadingPost] = useState(true);
+  const [loadingPopulars, setLoadingPopulars] = useState(true);
+  const [error, setError] = useState(null);
+
+  const { id } = useParams();
+
+  function stripHtmlTags(html) {
+    // Replace &nbsp; with a space
+    const withoutNbsp = html.replace(/&nbsp;/g, " ");
+
+    // Remove all other HTML tags
+    return withoutNbsp.replace(/<[^>]+>/g, "");
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingPost(true);
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts/${id}?key=${API_KEY}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch response");
+        }
+        const data = await response.json();
+
+        setPost(data);
+        data.content = stripHtmlTags(data.content);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoadingPost(false);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const relatedPosts = async () => {
+      setLoadingPopulars(true);
+      try {
+        const relatedResponse = await fetch(
+          `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts?key=${API_KEY}&maxResults=${SIDE_RELATED_RESULTS}`
+        );
+
+        if (!relatedResponse.ok) {
+          throw new Error("Couldn't fetch related");
+        }
+
+        const relatedPost = await relatedResponse.json();
+        setPopulars(relatedPost); 
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoadingPopulars(false);
+      }
+    };
+    relatedPosts();
+  }, []);
+
+  if (loadingPost || loadingPopulars) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  // Convert post.published to a Date object
+  const publishedDate = new Date(post.published);
+  // Get month, day, and year using toLocaleString and getFullYear methods
+  const month = publishedDate.toLocaleString("en-US", { month: "long" });
+  const day = publishedDate.toLocaleString("en-US", { day: "2-digit" });
+  const year = publishedDate.getFullYear();
+
   return (
     <>
       <section className="mt-10">
         <div className="px-[2rem] sm:px-[4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem]">
-          <div className="w-full sm:w-full md:w-full lg:w-8/12 xl:w-8/12">
+          <div className="w-full sm:w-full md:w-full">
             <div className="flex flex-wrap gap-x-1 text-l font-semibold">
-              <h1>
-                <Link to="">Home</Link>
-              </h1>
+              <Link to="">Home</Link>
               <p>/</p>
-              <h1>
-                <Link to="">Web Development</Link>
-              </h1>
+              <Link to="">Web Development</Link>
               <p>/</p>
-              <h1>
-                <Link to="">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry
-                </Link>
-              </h1>
+              <Link to="">{post.title}</Link>
             </div>
           </div>
         </div>
@@ -63,71 +135,24 @@ const Blog = () => {
                           <div className="flex justify-between items-center">
                             <div>
                               <h1 className="text-2xl font-bold">
-                                Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry.
+                                {post.title}
                               </h1>
                               <div className="flex flex-wrap items-center mt-1 gap-x-4">
-                                <h1>K.p.s Memorial High School</h1>
+                                <h1>{post.author.displayName}</h1>
                                 <div className="flex gap-x-1 items-center">
                                   <FaRegFolder />
                                   <p>Web Development</p>
                                 </div>
                                 <div className="flex gap-x-1 items-center">
                                   <FaRegClock />
-                                  <p>20 Mar 2024</p>
+                                  <p>
+                                    {month} {day}, {year}
+                                  </p>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <p className="mt-3">
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has
-                            survived not only five centuries, but also the leap
-                            into electronic typesetting, remaining essentially
-                            unchanged. It was popularised in the 1960s with the
-                            release of Letraset sheets containing Lorem Ipsum
-                            passages, and more recently with desktop publishing
-                            software like Aldus PageMaker including versions of
-                            Lorem Ipsum. Lorem Ipsum is simply dummy text of the
-                            printing and typesetting industry. Lorem Ipsum has
-                            been the industry's standard dummy text ever since
-                            the 1500s, when an unknown printer took a galley of
-                            type and scrambled it to make a type specimen book.
-                            It has survived not only five centuries, but also
-                            the leap into electronic typesetting, remaining
-                            essentially unchanged. It was popularised in the
-                            1960s with the release of Letraset sheets containing
-                            Lorem Ipsum passages, and more recently with desktop
-                            publishing software like Aldus PageMaker including
-                            versions of Lorem Ipsum. Lorem Ipsum is simply dummy
-                            text of the printing and typesetting industry. Lorem
-                            Ipsum has been the industry's standard dummy text
-                            ever since the 1500s, when an unknown printer took a
-                            galley of type and scrambled it to make a type
-                            specimen book. It has survived not only five
-                            centuries, but also the leap into electronic
-                            typesetting, remaining essentially unchanged. It was
-                            popularised in the 1960s with the release of
-                            Letraset sheets containing Lorem Ipsum passages, and
-                            more recently with desktop publishing software like
-                            Aldus PageMaker including versions of Lorem Ipsum.
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has
-                            survived not only five centuries, but also the leap
-                            into electronic typesetting, remaining essentially
-                            unchanged. It was popularised in the 1960s with the
-                            release of Letraset sheets containing Lorem Ipsum
-                            passages, and more recently with desktop publishing
-                            software like Aldus PageMaker including versions of
-                            Lorem Ipsum. Lorem Ipsum is simply dummy text of the
-                            printing and typesetting industry.
-                          </p>
+                          <p className="mt-3">{post.content}</p>
                         </div>
                         <div className="w-full border-[1px] border-gray mt-4"></div>
                         <div className="mt-5 flex flex-wrap justify-center sm:justify-between md:justify-between items-center">
@@ -190,7 +215,7 @@ const Blog = () => {
               </div>
             </div>
           </div>
-          <BlogSidebar />
+          <BlogSidebar populars={populars} />
         </div>
       </section>
     </>

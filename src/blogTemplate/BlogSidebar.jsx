@@ -12,9 +12,11 @@ import Tags from "../blogComponents/Tags";
 const images = [image1, image2, image3];
 
 const BlogSidebar = (props) => {
+  let populars = props.populars; 
 
-  const populars = props.populars;
-  console.log(populars);
+  if (!Array.isArray(populars)) { 
+    populars = props.populars.items; 
+  }
 
   return (
     <>
@@ -29,11 +31,9 @@ const BlogSidebar = (props) => {
           </div>
         </div>
         <div className="flex flex-col gap-y-8 mt-10">
-          {
-            populars.map((popular) =>(
-              <SLandscapeCard key={popular.id} {...popular}/>
-            ))
-          } 
+          {populars.map((popular) => (
+            <SLandscapeCard key={popular.id} {...popular} />
+          ))}
         </div>
         <div className="mt-10">
           <h1 className="text-xl sm:text-xl md:text-2xl lg:text-2xl xl:text-2xl font-semibold">

@@ -41,7 +41,7 @@ function App() {
         <Route path="/Freelance-Business" element={<Category />} />
         <Route path="/Lifestyle" element={<Category />} />
         <Route path="/Startups" element={<Category />} />
-        <Route path="/Blog" element={<Blog />} />
+        <Route path="/Blog/:id" element={<Blog />} />
         <Route path="/Contact-us" element={<ContactUs />} />
         <Route path="/Sign-in" element={<SignIn />} />
         <Route path="/Sign-up" element={<SignUp />} />

@@ -15,7 +15,7 @@ const PortraitCard = (props) => {
     <>
       <div className="W-full mt-10">
         <div className="">
-          <Link to="/Blog">
+          <Link to={`/Blog/${props.id}`}>
             <div className="h-[200px] overflow-hidden rounded-[4px]">
               <img
                 src={banner}
@@ -25,7 +25,7 @@ const PortraitCard = (props) => {
             </div>
           </Link>
           <div className="mt-5">
-            <Link to="/Blog">
+            <Link to={`/Blog/${props.id}`}>
               <h1 className="text-2xl font-bold mb-2 hover:text-[#418160]">
                 {
                   props.title.length > 65 ? 
