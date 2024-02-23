@@ -12,11 +12,8 @@ import Tags from "../blogComponents/Tags";
 const images = [image1, image2, image3];
 
 const BlogSidebar = (props) => {
-  let populars = props.populars; 
-
-  if (!Array.isArray(populars)) { 
-    populars = props.populars.items; 
-  }
+  
+  const populars = props.populars; 
 
   return (
     <>

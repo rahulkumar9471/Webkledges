@@ -1,59 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import PortraitCard from "../blogComponents/PortraitCard";
 import BlogSidebar from "../blogTemplate/BlogSidebar";
 import Breadcrumb from "../blogComponents/Breadcrumb ";
 import Spinner from "../blogComponents/Spinner";
+import { AppContext } from "../context/AppContext";
 
 const Category = () => {
-  const API_KEY = "AIzaSyCYgDAPHqBrC20ob9WMWhCV5Vv8kSPLtkM";
-  const BLOG_ID = "3226864875966992925";
-  const LATEST_RESULTS = 10;
-  const SIDE_POPULAR_RESULTS = 6;
 
-  const [categorys, setCategorys] = useState([]);
-  const [populars, setPopular] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  function stripHtmlTags(html) {
-    // Replace &nbsp; with a space
-    const withoutNbsp = html.replace(/&nbsp;/g, " ");
-
-    // Remove all other HTML tags
-    return withoutNbsp.replace(/<[^>]+>/g, "");
-  }
-
-  useEffect(() => {
-    const categoryData = async (endpoint, setter, maxResults) => {
-      setLoading(true);
-      try {
-        const categoryResponse = await fetch(endpoint);
-
-        if (!categoryResponse.ok) {
-          throw new Error("Failed to fetch error");
-        }
-
-        const categorysData = await categoryResponse.json();
-
-        setter(categorysData.items.map((item) => ({
-          ...item,
-          content: stripHtmlTags(item.content),
-        })));
-      } catch (e) {
-        console.error("Error fetch", e);
-      }
-      setLoading(false);
-    }; 
-    categoryData(
-      `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts?key=${API_KEY}&maxResults=${LATEST_RESULTS}`,
-      setCategorys,
-      LATEST_RESULTS
-    );
-    categoryData(
-      `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts?key=${API_KEY}&maxResults=${SIDE_POPULAR_RESULTS}`,
-      setPopular,
-      SIDE_POPULAR_RESULTS
-    );
-  }, []);
+  const {categorys,populars,loading} = useContext(AppContext);
 
   if (loading) {
     return <Spinner />;

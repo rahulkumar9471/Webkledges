@@ -12,7 +12,7 @@ const SLandscapeCard = (props) => {
   return (
     <>
       <div className="flex justify-start items-center gap-x-6">
-        <Link to="/Blog">
+        <Link to={`/Blog/${props.id}`}>
           <div className="overflow-hidden rounded-[4px] w-[150px] h-[110px]">
             <img
               src={banner}
@@ -23,7 +23,7 @@ const SLandscapeCard = (props) => {
         </Link>
         <div className="flex flex-col ">
           <div>
-            <Link to="/Blog">
+            <Link to={`/Blog/${props.id}`}>
               <h1 className="text-l font-bold hover:text-[#418160]">
                 {props.title.length > 90
                   ? props.title.substr(0, 90) + "..."

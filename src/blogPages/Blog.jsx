@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import banner from "../img/banner.jpg";
 import BlogSidebar from "../blogTemplate/BlogSidebar";
@@ -15,15 +15,16 @@ import { FaLinkedin } from "react-icons/fa";
 import BlogComment from "../blogComponents/BlogComment";
 import LeaveComment from "../blogComponents/LeaveComment";
 import Spinner from "../blogComponents/Spinner";
+import { AppContext } from "../context/AppContext";
 
 const Blog = () => {
+
+  const {populars} = useContext(AppContext);
+
   const API_KEY = "AIzaSyCYgDAPHqBrC20ob9WMWhCV5Vv8kSPLtkM";
-  const BLOG_ID = "3226864875966992925";
-  const SIDE_RELATED_RESULTS = 6;
-  const [post, setPost] = useState([]);
-  const [populars, setPopulars] = useState([]);
-  const [loadingPost, setLoadingPost] = useState(true);
-  const [loadingPopulars, setLoadingPopulars] = useState(true);
+  const BLOG_ID = "3226864875966992925"; 
+  const [post, setPost] = useState([]); 
+  const [loadingPost, setLoadingPost] = useState(true); 
   const [error, setError] = useState(null);
 
   const { id } = useParams();
@@ -59,30 +60,7 @@ const Blog = () => {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-    const relatedPosts = async () => {
-      setLoadingPopulars(true);
-      try {
-        const relatedResponse = await fetch(
-          `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts?key=${API_KEY}&maxResults=${SIDE_RELATED_RESULTS}`
-        );
-
-        if (!relatedResponse.ok) {
-          throw new Error("Couldn't fetch related");
-        }
-
-        const relatedPost = await relatedResponse.json();
-        setPopulars(relatedPost); 
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoadingPopulars(false);
-      }
-    };
-    relatedPosts();
-  }, []);
-
-  if (loadingPost || loadingPopulars) {
+  if (loadingPost) {
     return <Spinner />;
   }
 
