@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Webkledges/static/css/main.b4bcf48e.css",
+    "main.js": "/Webkledges/static/js/main.c51c0ea6.js",
+    "static/media/banner.jpg": "/Webkledges/static/media/banner.7e53d66727c622a69d40.jpg",
+    "index.html": "/Webkledges/index.html",
+    "main.b4bcf48e.css.map": "/Webkledges/static/css/main.b4bcf48e.css.map",
+    "main.c51c0ea6.js.map": "/Webkledges/static/js/main.c51c0ea6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b4bcf48e.css",
+    "static/js/main.c51c0ea6.js"
+  ]
+}
