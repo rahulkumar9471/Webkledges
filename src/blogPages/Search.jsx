@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"; 
+import React, { useContext, useEffect, useState } from "react";
 import PortraitCard from "../blogComponents/PortraitCard";
 import { AppContext } from "../context/AppContext";
 import Spinner from "../blogComponents/Spinner";
@@ -24,7 +24,7 @@ const Search = () => {
 
   useEffect(() => {
     const searchFetchData = async () => {
-        setSearchLoading(true);
+      setSearchLoading(true);
       try {
         const response = await fetch(
           `https://blogger.googleapis.com/v3/blogs/${BLOG_ID}/posts/search?q=${q}&key=${API_KEY}`
@@ -41,22 +41,22 @@ const Search = () => {
             ...item,
             content: stripHtmlTags(item.content),
           }))
-        ); 
+        );
       } catch (err) {
         console.error("Error Msg", err);
+        setSearchDatas([]);
       }
       setSearchLoading(false);
     };
     searchFetchData();
   }, [q]);
 
-
   if (searchLoading) {
     return <Spinner />;
   }
 
   return (
-    <> 
+    <>
       <section className="mt-10">
         <div className="lg:flex gap-x-10 px-[2rem] sm:px-[4rem] md:px-[4rem] lg:px-[6rem] xl:px-[8rem]">
           <div className="w-full sm:w-full md:w-full lg:w-8/12 xl:w-8/12 ">
@@ -72,12 +72,23 @@ const Search = () => {
             <div className="">
               <div className="lg:flex gap-x-10">
                 <div className="container">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-10">
-                    {searchDatas.map((searchData) => (
-                      <PortraitCard key={searchData.id} {...searchData} />
-                    ))}
+                  <div
+                    className={`grid grid-cols-1 ${
+                      searchDatas.length > 0
+                        ? "md:grid-cols-2 lg:grid-cols-2 gap-x-10"
+                        : ""
+                    }`}
+                  >
+                    {searchDatas.length > 0 ? (
+                      searchDatas.map((searchData) => (
+                        <PortraitCard key={searchData.id} {...searchData} />
+                      ))
+                    ) : (
+                      <div className="flex justify-center items-center ">
+                        Not Found
+                      </div>
+                    )}
                   </div>
-
                 </div>
               </div>
             </div>
