@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { MdClose } from "react-icons/md";
+import { MdClose } from "react-icons/md";  
+import { useNavigate } from 'react-router-dom';
+
 
 const Searchbar = (props) => {
   const toggleSearchbar = props.toggleSearchbar;
   const isSearchOpen = props.isSearchOpen;
+
+  const [query, setQuery] = useState([]);
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => { 
+    setQuery(e.target.value);  
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate(`/Search/${query}`);
+    toggleSearchbar();
+    setQuery("");
+  }
 
   return (
     <div
@@ -20,16 +36,23 @@ const Searchbar = (props) => {
       </button>
       <div className="h-full flex flex-col justify-center items-center">
         <h1 className="text-3xl mb-8 text-[#203656]">Press ESC to Close</h1>
-        <div className="md:flex gap-x-2 w-10/12 justify-center mx-auto">
-          <input
-            type="text"
-            className="w-full sm:w-full md:w-[500px] rounded-[50px] border-2 border-[#34433b] p-[10px] px-[10px] mb-1 text-[#000]"
-            placeholder="Search..."
-          />
-          <button className="bg-gradient-to-r from-[#34433b] via-[#418160] to-[#236543] p-2 rounded-[50px] h-[46px] w-full sm:w-full md:w-[100px] flex justify-center items-center text-center align-middle text-white font-bold mt-2 md:mt-0">
-            <CiSearch className="text-2xl" />
-          </button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="md:flex gap-x-2 w-10/12 justify-center mx-auto">
+            <input
+              type="text"
+              className="w-full sm:w-full md:w-[500px] rounded-[50px] border-2 border-[#34433b] p-[10px] px-[10px] mb-1 text-[#000]"
+              placeholder="Search..."
+              value={query}
+              onChange={handleInputChange}
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-[#34433b] via-[#418160] to-[#236543] p-2 rounded-[50px] h-[46px] w-full sm:w-full md:w-[100px] flex justify-center items-center text-center align-middle text-white font-bold mt-2 md:mt-0"
+            >
+              <CiSearch className="text-2xl" />
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

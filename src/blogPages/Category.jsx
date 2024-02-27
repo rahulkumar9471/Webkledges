@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import PortraitCard from "../blogComponents/PortraitCard";
 import BlogSidebar from "../blogTemplate/BlogSidebar";
-import Breadcrumb from "../blogComponents/Breadcrumb ";
+import Breadcrumb from "../blogComponents/Breadcrumb";
 import Spinner from "../blogComponents/Spinner";
 import { AppContext } from "../context/AppContext";
 

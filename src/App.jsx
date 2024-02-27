@@ -13,6 +13,7 @@ import SignIn from "./loginComponents/SignIn";
 import SignUp from "./loginComponents/SignUp";
 import ForgotPassword from "./loginComponents/ForgotPassword"; 
 import NotFound from "./Pages/NotFound";
+import Search from "./blogPages/Search";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/Lifestyle" element={<Category />} />
         <Route path="/Startups" element={<Category />} />
         <Route path="/Blog/:id" element={<Blog />} />
+        <Route path="/Search/:q" element={<Search />} />
         <Route path="/Contact-us" element={<ContactUs />} />
         <Route path="/Sign-in" element={<SignIn />} />
         <Route path="/Sign-up" element={<SignUp />} />
