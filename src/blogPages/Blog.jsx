@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import banner from "../img/banner.jpg";
 import BlogSidebar from "../blogTemplate/BlogSidebar";
 import {
@@ -23,7 +23,7 @@ const Blog = () => {
 
   const API_KEY = "AIzaSyCYgDAPHqBrC20ob9WMWhCV5Vv8kSPLtkM";
   const BLOG_ID = "3226864875966992925"; 
-  const [post, setPost] = useState([]); 
+  const [post, setPost] = useState([]);  
   const [loadingPost, setLoadingPost] = useState(true); 
   const [error, setError] = useState(null);
 

@@ -22,6 +22,8 @@ const Search = () => {
     return withoutNbsp.replace(/<[^>]+>/g, "");
   }
 
+  // https://blogger.googleapis.com/v3/blogs/3226864875966992925/posts?maxResults=10&pageToken=CgkIChjk4fbwnS4QnaTK8aCQiOQsGAA&key=[YOUR_API_KEY]
+
   useEffect(() => {
     const searchFetchData = async () => {
       setSearchLoading(true);
@@ -35,6 +37,8 @@ const Search = () => {
         }
 
         const data = await response.json();
+
+        console.log(data);
 
         setSearchDatas(
           data.items.map((item) => ({

@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { MdClose } from "react-icons/md";  
-import { useNavigate } from 'react-router-dom';
-
+import { MdClose } from "react-icons/md";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Searchbar = (props) => {
   const toggleSearchbar = props.toggleSearchbar;
   const isSearchOpen = props.isSearchOpen;
 
-  const [query, setQuery] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => { 
-    setQuery(e.target.value);  
-  }
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate(`/Search/${query}`);
+    setSearchParams({ q: searchQuery });
+    navigate(`/Search/${encodeURIComponent(searchQuery)}`);
     toggleSearchbar();
-    setQuery("");
-  }
+    setSearchQuery("");
+  };
 
   return (
     <div
@@ -42,7 +43,7 @@ const Searchbar = (props) => {
               type="text"
               className="w-full sm:w-full md:w-[500px] rounded-[50px] border-2 border-[#34433b] p-[10px] px-[10px] mb-1 text-[#000]"
               placeholder="Search..."
-              value={query}
+              value={searchQuery}
               onChange={handleInputChange}
             />
             <button
